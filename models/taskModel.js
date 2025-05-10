@@ -21,7 +21,7 @@ const taskSchema = mongoose.Schema(
             required: true
         },
         labels: {
-            type: [String],
+            type: [{ name: String }],
             required: false,
         },
     },

@@ -1,11 +1,13 @@
+///////////////////////////////////////////IMPORTS///////////////////////////////////////
 require('dotenv').config();
 
-///////////////////////////////////////////MODELS///////////////////////////////////////
+///////////////////////////////////////////IMPORT MODELS///////////////////////////////////////
 
 const TaskModel = require('../models/taskModel.js')
 
 ///////////////////////////////////////////FUNCTIONS///////////////////////////////////////
 
+//DONE
 const getAllTasks = async(req,res) => {
     try {
         const tasks = await TaskModel.find();
@@ -19,6 +21,7 @@ const getAllTasks = async(req,res) => {
     }
 }
 
+//DONE
 const createTask = async(req,res) => {
     try {
         const { title, description, state, priority, labels } = req.body;
@@ -37,6 +40,7 @@ const createTask = async(req,res) => {
     }
 }
 
+//DONE
 const getTaskById = async(req,res) => {
     try {
         const { id } = req.params;
@@ -51,6 +55,7 @@ const getTaskById = async(req,res) => {
     }
 }
 
+//DONE
 const updateTask = async(req,res) => {
     try {
         const { id } = req.params;
@@ -72,6 +77,7 @@ const updateTask = async(req,res) => {
     }
 }
 
+//DONE
 const deleteTask = async(req,res) => {
     try {
         const { id } = req.params;
