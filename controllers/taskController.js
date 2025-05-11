@@ -10,10 +10,26 @@ const TaskModel = require('../models/taskModel.js')
 //DONE
 const getAllTasks = async (req, res) => {
   try {
-    const sortBy = req.query.sortBy || 'createdAt'; // campo para ordenar
-    const order = req.query.order === 'asc' ? 1 : -1; // ascendente o descendente
+    const { sortBy = 'createdAt', order = 'desc', state, priority, labels } = req.query;
 
-    const tasks = await TaskModel.find().sort({ [sortBy]: order });
+    // Construcción de filtros
+    let filter = {};
+
+    if (state) {
+      filter.state = { $in: state.split(',') }; // Filtra por uno o varios estados
+    }
+
+    if (priority) {
+      filter.priority = { $in: priority.split(',') }; // Filtra por una o más prioridades
+    }
+
+    if (labels) {
+      filter.labels = { $in: labels.split(',') }; // Filtra por una o más etiquetas
+    }
+
+    const sortOrder = order === 'asc' ? 1 : -1; // ascendente o descendente
+
+    const tasks = await TaskModel.find(filter).sort({ [sortBy]: sortOrder });
 
     if (!tasks || tasks.length === 0) {
       return res.status(404).json({ message: 'No se encontraron tareas' });
