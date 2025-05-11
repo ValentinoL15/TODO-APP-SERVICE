@@ -8,18 +8,23 @@ const TaskModel = require('../models/taskModel.js')
 ///////////////////////////////////////////FUNCTIONS///////////////////////////////////////
 
 //DONE
-const getAllTasks = async(req,res) => {
-    try {
-        const tasks = await TaskModel.find();
-        if(!tasks || tasks.length === 0) {
-            return res.status(404).json({ message: 'No se encontraron tareas' });
-        }
-        return res.status(200).json({ tasks })
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'Ocurrió un error obteniendo las tareas' });
+const getAllTasks = async (req, res) => {
+  try {
+    const sortBy = req.query.sortBy || 'createdAt'; // campo para ordenar
+    const order = req.query.order === 'asc' ? 1 : -1; // ascendente o descendente
+
+    const tasks = await TaskModel.find().sort({ [sortBy]: order });
+
+    if (!tasks || tasks.length === 0) {
+      return res.status(404).json({ message: 'No se encontraron tareas' });
     }
-}
+
+    return res.status(200).json({ tasks });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Ocurrió un error obteniendo las tareas' });
+  }
+};
 
 //DONE
 const createTask = async(req,res) => {
